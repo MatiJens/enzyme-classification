@@ -12,6 +12,6 @@ def split_test_train(enzyme, not_enzyme):
     proteins = pd.concat([enzyme, not_enzyme])
 
     # Split data into features and target / train and test
-    x_train, x_test, y_train, y_test = train_test_split(proteins.iloc[:, 0:-2], proteins['is_enzyme'], test_size=0.2, random_state=42, stratify=proteins['is_enzyme'])
+    x_train, x_test, y_train, y_test = train_test_split(proteins.iloc[:, 0:-1], proteins['is_enzyme'], test_size=0.2, random_state=42, stratify=proteins['is_enzyme'])
 
     return x_train, x_test, y_train, y_test

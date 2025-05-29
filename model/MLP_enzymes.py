@@ -7,9 +7,9 @@ class MLP_enzymes(nn.Module):
         super(MLP_enzymes, self).__init__()
 
         self.mlp = nn.Sequential(
-            nn.Linear(22, 20),
+            nn.Linear(23, 30),
             nn.ReLU(),
-            nn.Linear(20, 10),
+            nn.Linear(30, 10),
             nn.ReLU(),
         )
 
