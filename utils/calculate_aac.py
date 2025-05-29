@@ -1,8 +1,9 @@
+from Bio.SeqUtils.ProtParam import ProteinAnalysis
+
 def calculate_aac(sequence):
-    AMINO_ACIDS = 'ACDEFGHIKLMNPQRSTVWY'
 
-    acc = []
-    for aminoacid in AMINO_ACIDS:
-        acc.append(sequence.count(aminoacid) / len(sequence))
+    # Calculate percentage of every aminoacid in sequence
+    sequence = ProteinAnalysis(sequence)
+    acc_percent = sequence.amino_acids_percent
 
-    return acc
+    return acc_percent
