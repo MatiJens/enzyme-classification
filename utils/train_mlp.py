@@ -6,8 +6,8 @@ from torch import optim
 def train_mlp(model, x_train, y_train):
 
     #HIPERPARAMETERS
-    EPOCHS = 200
-    LR = 0.002
+    EPOCHS = 2000
+    LR = 0.005
 
     # Create criterion and optimizer
     criterion = nn.CrossEntropyLoss()
@@ -29,9 +29,9 @@ def train_mlp(model, x_train, y_train):
         # Add current loss to list
         loss_per_epoch.append(loss.item())
 
-        # Print current loss every 20 epochs
-        #if(epoch + 1) % 20 == 0:
-        #    print(f"Epoch {epoch + 1}/{EPOCHS}, Loss {loss.item():.4f}")
+        #Print current loss every 20 epochs
+        if(epoch + 1) % 20 == 0:
+            print(f"Epoch {epoch + 1}/{EPOCHS}, Loss {loss.item():.4f}")
 
     plt.plot(loss_per_epoch)
     plt.xlabel('Epoch')

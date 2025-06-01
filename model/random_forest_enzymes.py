@@ -5,9 +5,9 @@ from sklearn.model_selection import GridSearchCV
 def random_forest_enzymes(x_train, y_train):
 
     # HIPERPARAMETERS
-    N_ESTIMATORS = 2000
+    N_ESTIMATORS = 200
     MAX_DEPTH = 10
-    MIN_SAMPLE_SPLIT = 2
+    MIN_SAMPLE_SPLIT = 10
     MIN_SAMPLE_LEAF = 1
 
     model_random_forest = RandomForestClassifier(
@@ -20,6 +20,7 @@ def random_forest_enzymes(x_train, y_train):
     model_random_forest.fit(x_train, y_train)
 
     return model_random_forest
+
 
     param_grid = {
         'n_estimators': [100, 200, 500],
@@ -43,3 +44,4 @@ def random_forest_enzymes(x_train, y_train):
 
     print(f"Best parameters: {search_param.best_params_}")
     print(f"Best accuracy: {search_param.best_score_}")
+    
