@@ -1,6 +1,6 @@
 from Bio import SeqIO
 
-def load_fasta(enzyme_path, not_enzyme_path, limit=1000):
+def load_fasta(enzyme_path, not_enzyme_path, limit=10000):
 
     # List with enzymes sequences
     enzymes = []

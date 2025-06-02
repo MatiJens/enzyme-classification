@@ -6,8 +6,8 @@ from torch import optim
 def train_mlp(model, x_train, y_train):
 
     #HIPERPARAMETERS
-    EPOCHS = 2000
-    LR = 0.005
+    EPOCHS = 600
+    LR = 0.0005
 
     # Create criterion and optimizer
     criterion = nn.CrossEntropyLoss()
