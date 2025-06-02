@@ -9,6 +9,9 @@ def load_fasta(enzyme_path, not_enzyme_path, limit=1000):
     for enzyme, not_enzyme in zip(SeqIO.parse(enzyme_path, "fasta"), SeqIO.parse(not_enzyme_path, "fasta")):
           enzymes.append(enzyme.seq)
           not_enzymes.append(not_enzyme.seq)
+          if len(not_enzymes) >= limit:
+               break
+
 
     """
     # Load every sequence from fasta file and add to enzymes list

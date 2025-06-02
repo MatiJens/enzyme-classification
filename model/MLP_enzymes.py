@@ -8,15 +8,15 @@ class MLP_enzymes(nn.Module):
         super(MLP_enzymes, self).__init__()
 
         self.mlp = nn.Sequential(
-            nn.Linear(self.input_len, 60),
-            nn.ReLU(),
-            nn.Linear(60, 40),
+            nn.Linear(self.input_len, 40),
             nn.ReLU(),
             nn.Linear(40, 20),
             nn.ReLU(),
+            nn.Linear(20, 10),
+            nn.ReLU(),
         )
 
-        self.fc_result = nn.Linear(20, 2)
+        self.fc_result = nn.Linear(10, 2)
 
     def forward(self, x):
 
