@@ -36,10 +36,12 @@ def train_mlp(model, x_train, y_train):
         if(epoch + 1) % 20 == 0:
             print(f"Epoch {epoch + 1}/{EPOCHS}, Loss {loss.item():.4f}")
         
+        # Stop learning if loss < LOSS_BREAK
         if loss.item() < LOSS_BREAK:
             print(f"{LOSS_BREAK} achieved, stopping learning process")
             break 
 
+    # Learning process plot
     plt.plot(loss_per_epoch)
     plt.xlabel('Epoch')
     plt.ylabel('Loss')

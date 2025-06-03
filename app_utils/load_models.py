@@ -4,6 +4,7 @@ from esm.models.esmc import ESMC
 
 def load_models():
 
+    # Load MLP and ESM-C model
     client = ESMC.from_pretrained("esmc_300m").to("cpu")
     model = MLP_enzymes()
     state_dict = torch.load('model/enzymes_MLP.pth', map_location=torch.device('cpu'))

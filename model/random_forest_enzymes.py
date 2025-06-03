@@ -21,6 +21,7 @@ def random_forest_enzymes(x_train, y_train):
 
     return model_random_forest
 
+    # Search for best parameters
     model_rf = RandomForestClassifier()
 
     param_grid = {
