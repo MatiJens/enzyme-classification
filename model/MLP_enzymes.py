@@ -1,22 +1,22 @@
+import torch
 import torch.nn as nn
 
 class MLP_enzymes(nn.Module):
 
-    def __init__(self, input_len):
+    def __init__(self):
         
-        self.input_len = input_len
         super(MLP_enzymes, self).__init__()
 
         self.mlp = nn.Sequential(
-            nn.Linear(self.input_len, 40),
+            nn.Linear(960, 1024),
             nn.ReLU(),
-            nn.Linear(40, 20),
+            nn.Linear(1024, 512),
             nn.ReLU(),
-            nn.Linear(20, 10),
+            nn.Linear(512, 256),
             nn.ReLU(),
         )
 
-        self.fc_result = nn.Linear(10, 2)
+        self.fc_result = nn.Linear(256, 1)
 
     def forward(self, x):
 
