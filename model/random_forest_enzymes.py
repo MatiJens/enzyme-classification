@@ -3,7 +3,7 @@ from sklearn.model_selection import GridSearchCV
 
 
 def random_forest_enzymes(x_train, y_train):
-
+    
     # HIPERPARAMETERS
     N_ESTIMATORS = 100
     MAX_DEPTH = 1

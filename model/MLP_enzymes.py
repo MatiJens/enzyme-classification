@@ -18,7 +18,7 @@ class MLP_enzymes(nn.Module):
         )
 
         # Output layer, 1 neuron because it will predict TRUE/FALSE
-        self.fc_result = nn.Linear(256, 1)
+        self.fc_result = nn.Linear(256, 8)
 
     def forward(self, x):
 

@@ -5,15 +5,13 @@ from torch import optim
 
 def train_mlp(model, x_train, y_train):
 
-    y_train_reshaped = y_train.float().unsqueeze(1)
-
     #HIPERPARAMETERS
     EPOCHS = 1000
     LR = 0.0012
     LOSS_BREAK = 0.08
 
     # Create criterion and optimizer
-    criterion = nn.BCEWithLogitsLoss()
+    criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=LR)
 
     # List of loss of every epoch
@@ -24,7 +22,7 @@ def train_mlp(model, x_train, y_train):
         # Model training
         model.train()
         outputs = model(x_train)
-        loss = criterion(outputs, y_train_reshaped)
+        loss = criterion(outputs, y_train)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()

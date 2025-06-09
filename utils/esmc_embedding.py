@@ -1,30 +1,51 @@
-from esm.sdk.api import ESMProtein, LogitsConfig
-from esm.models.esmc import ESMC
-from utils import initialize_esm_client
+from esm.sdk.api import (
+    ESM3InferenceClient,
+    ESMProtein,
+    ESMProteinError,
+    LogitsConfig,
+    LogitsOutput,
+    ProteinType,
+)
+from concurrent.futures import ThreadPoolExecutor
+import torch
 
-def esmc_embedding(raw_proteins, client):
+def esmc_embedding(data, client, batch_size=32):
 
-    # Transform SEQ into str
-    proteins = [str(item) for item in raw_proteins]
+    # Convert sequences to ESMProtein objects
+    proteins = [ESMProtein(sequence=str(seq)) for seq in data['sequence']]
+    num_proteins = len(proteins)
     # List of embeddings
-    embeddings = []
+    all_embeddings = []
 
-    for i, seq in enumerate(proteins):
-        print(f"{i + 1}/{len(proteins)}")
+    for i in range(0, num_proteins, batch_size):
+        # Create batch of proteins
+        batch = proteins[i:i + batch_size]
+        print(f"Batch {i//batch_size}/{num_proteins//batch_size}")
 
-        # Tranform sequence to correct format
-        protein = ESMProtein(sequence=seq)
-        # Encode sequence
-        protein_tensor = client.encode(protein)
+        # Encode every protein in batch
+        encoded_proteins = [client.encode(p) for p in batch]
+
+        # Transform ESMProteinTensor to tensor
+        list_of_tensors = [encoded_p.tensor() for encoded_p in encoded_proteins]
+
+        # Create tensor from list of encoded proteins
+        protein_tensor = torch.cat(list_of_tensors, dim=0)
+
         # Create logits
         logits_output = client.logits(
             protein_tensor, LogitsConfig(return_embeddings=True)
         )
-        # Save embedding to variable
-        embedding = logits_output.embeddings
-        # Get only first vector from embedding (global vector)
-        global_embb = embedding[0, 0, :]
-        # Add vector to list
-        embeddings.append(global_embb)
 
-    return embeddings
+        # Get only first vector from embedding (global vector)
+        embeddings_batch = logits_output.embeddings[:, 0, :]
+
+        # Add new embeddings to list of all embeddings
+        all_embeddings.extend(embeddings_batch.detach())
+
+    # Add embeddings as new feature to df
+    data['embeddings'] = [emb.numpy() for emb in all_embeddings]
+
+    # Remove sequence column it's unnecessary now
+    data = data.drop(columns=['sequence'])
+
+    return data

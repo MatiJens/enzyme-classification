@@ -1,17 +1,35 @@
 from Bio import SeqIO
+import os
+import pandas as pd
 
-def load_fasta(enzyme_path, not_enzyme_path, limit=10000):
+def load_fasta(path, seq_limit, list_limit):
 
-    # List with enzymes/not enzymes sequences
-    enzymes = []
-    not_enzymes = []
+    # List with all sequences
+    all_sequences = []
+    # Load every type of enzyme (0 = not enzyme)
+    for i in range(8):
+        ec_sequences = []
+        file_path = os.path.join(path, f"EC{i}.fasta")
 
-    # Add every sequence to lists from FASTA file using biopython
-    for enzyme, not_enzyme in zip(SeqIO.parse(enzyme_path, "fasta"), SeqIO.parse(not_enzyme_path, "fasta")):
-          enzymes.append(enzyme.seq)
-          not_enzymes.append(not_enzyme.seq)
-          if len(not_enzymes) >= limit:
-               break
-          
-    return enzymes, not_enzymes
+        # Check if file exists
+        try:
+            iterator = SeqIO.parse(file_path, "fasta")
+        except FileNotFoundError:
+            print(f"Not found {file_path}, skipping it")
+            continue
+        
+        # Load sequences from fasta file and count number of sequences
+        for record in iterator:
+            # If limit is reached leave the loop
+            if len(ec_sequences) >= list_limit:
+                break
+            # Create new dictionary and add it to list
+            if seq_limit >= len(str(record.seq)) > 25:
+                new_sequence = {'sequence' : str(record.seq), 'EC' : i}
+                ec_sequences.append(new_sequence)
+        
+        all_sequences.extend(ec_sequences)
 
+    # Create df with all loaded data
+    data = pd.DataFrame(all_sequences)
+    return data
